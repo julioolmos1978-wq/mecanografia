@@ -1,0 +1,1084 @@
+/* ==========================================================================
+   TypoMaster - Interfaz Limpia y Clara de Mecanografía
+   Inspirada en Typing.com, TypingClub y Ratatype
+   Paleta: Colores claros no distractores, máxima legibilidad y ergonomía
+   ========================================================================== */
+
+:root {
+  /* Paleta Base Clara No Distractora */
+  --bg-page: #f8fafc;            /* Gris tenue calmante (Slate 50) */
+  --bg-card: #ffffff;            /* Blanco puro para tarjetas */
+  --bg-subtle: #f1f5f9;          /* Slate 100 para fondos secundarios */
+  --bg-hover: #e2e8f0;           /* Slate 200 para interacciones */
+  
+  /* Bordes y Sombras Sutiles */
+  --border-light: #e2e8f0;       /* Borde suave casi invisible */
+  --border-focus: #94a3b8;       /* Borde al enfocar */
+  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.04), 0 1px 2px rgba(15, 23, 42, 0.02);
+  --shadow-md: 0 4px 12px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.03);
+  --shadow-lg: 0 12px 28px -6px rgba(15, 23, 42, 0.08), 0 6px 12px -3px rgba(15, 23, 42, 0.04);
+  
+  /* Tipografía y Textos */
+  --text-main: #1e293b;          /* Slate 800 - Negro suave, no estridente */
+  --text-muted: #64748b;         /* Slate 500 para etiquetas secundarias */
+  --text-faint: #94a3b8;         /* Slate 400 para texto pendiente */
+  
+  /* Colores de Acento y Estado */
+  --color-primary: #3b82f6;      /* Azul sereno equilibrado */
+  --color-primary-light: #eff6ff;/* Fondo azul tenue */
+  --color-correct: #059669;      /* Verde esmeralda suave (acierto) */
+  --color-correct-bg: #ecfdf5;   /* Fondo verde sutil */
+  --color-error: #e11d48;        /* Rosa carmesí suave (error legible) */
+  --color-error-bg: #ffe4e6;     /* Fondo error sutil */
+  --color-gold: #f59e0b;         /* Ámbar para estrellas y logros */
+
+  /* Colores de Dedos (Guía tipo TypingClub / Ratatype) */
+  --finger-pinky: #ec4899;       /* Rosa pastel */
+  --finger-pinky-bg: #fdf2f8;
+  --finger-ring: #f97316;        /* Naranja pastel */
+  --finger-ring-bg: #fff7ed;
+  --finger-middle: #eab308;      /* Miel pastel */
+  --finger-middle-bg: #fefce8;
+  --finger-index: #10b981;       /* Verde menta */
+  --finger-index-bg: #ecfdf5;
+  --finger-thumb: #0ea5e9;       /* Celeste pastel */
+  --finger-thumb-bg: #f0f9ff;
+
+  /* Tecla física */
+  --key-cap-bg: #ffffff;
+  --key-cap-border: #cbd5e1;
+  --key-cap-shadow: 0 3px 0 #cbd5e1, 0 4px 6px rgba(0, 0, 0, 0.04);
+  --key-cap-active-shadow: 0 1px 0 #94a3b8;
+
+  /* Fuentes del Sistema y Fallbacks */
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', 'Courier New', monospace;
+  
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+  
+  --transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Reset Global */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-page);
+  color: var(--text-main);
+  line-height: 1.5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ==========================================================================
+   Cabecera de Navegación Limpia
+   ========================================================================== */
+.site-header {
+  background-color: var(--bg-card);
+  border-bottom: 1px solid var(--border-light);
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.brand-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.brand-icon {
+  width: 38px;
+  height: 38px;
+  background: linear-gradient(135deg, #3b82f6, #6366f1);
+  color: #ffffff;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.25);
+}
+
+.brand-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-main);
+}
+
+.brand-subtitle {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.btn-header {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  color: var(--text-muted);
+  padding: 0.45rem 0.85rem;
+  font-size: 0.825rem;
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: var(--transition);
+}
+
+.btn-header:hover {
+  background: var(--bg-subtle);
+  color: var(--text-main);
+  border-color: var(--border-focus);
+}
+
+.btn-header.active {
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+/* ==========================================================================
+   Contenedor Principal y Layout
+   ========================================================================== */
+.app-container {
+  max-width: 1160px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* ==========================================================================
+   Panel de Indicadores en Tiempo Real (WPM, CPM, Precisión, Tiempo)
+   ========================================================================== */
+.stats-dashboard {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.5rem;
+  box-shadow: var(--shadow-sm);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr) auto;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.stat-header {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.stat-value-group {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+}
+
+.stat-number {
+  font-family: var(--font-mono);
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--text-main);
+}
+
+.stat-unit {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.stat-item.highlight-wpm .stat-number {
+  color: var(--color-primary);
+}
+
+.stat-item.highlight-acc .stat-number {
+  color: var(--color-correct);
+}
+
+.stat-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-icon-action {
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-light);
+  color: var(--text-muted);
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+  font-size: 0.95rem;
+}
+
+.btn-icon-action:hover {
+  background: var(--border-light);
+  color: var(--text-main);
+  transform: translateY(-1px);
+}
+
+/* Barra de progreso de la lección */
+.progress-container {
+  width: 100%;
+  height: 6px;
+  background: var(--bg-subtle);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  margin-top: -0.5rem;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #3b82f6, #10b981);
+  width: 0%;
+  transition: width 0.15s ease-out;
+}
+
+/* ==========================================================================
+   Área de Práctica de Mecanografía (El Texto)
+   ========================================================================== */
+.typing-stage {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.stage-top-bar {
+  background: #fafbfd;
+  border-bottom: 1px solid var(--border-light);
+  padding: 0.65rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.lesson-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.lesson-pill {
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  font-size: 0.725rem;
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-sm);
+}
+
+.stage-hint {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* Contenedor del texto de escritura */
+.text-display-box {
+  padding: 2.25rem 2rem;
+  min-height: 160px;
+  max-height: 240px;
+  overflow-y: auto;
+  font-family: var(--font-mono);
+  font-size: 1.55rem;
+  line-height: 2.1;
+  letter-spacing: 0.02em;
+  color: var(--text-faint);
+  user-select: none;
+  cursor: text;
+  position: relative;
+  outline: none;
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+
+/* Estilos de Caracteres Individuales */
+.char {
+  position: relative;
+  border-radius: 3px;
+  transition: background-color 0.08s ease, color 0.08s ease;
+}
+
+.char.char-space {
+  display: inline-block;
+  min-width: 0.55em;
+}
+
+.char.char-space.char-incorrect {
+  background-color: var(--color-error-bg);
+  border-bottom: 2px solid var(--color-error);
+}
+
+.char.char-correct {
+  color: var(--color-correct);
+  background-color: transparent;
+}
+
+.char.char-incorrect {
+  color: var(--color-error);
+  background-color: var(--color-error-bg);
+  border-bottom: 2px solid var(--color-error);
+  text-decoration: underline wavy var(--color-error);
+}
+
+.char.char-current {
+  color: var(--text-main);
+  background-color: var(--color-primary-light);
+  border-bottom: 3px solid var(--color-primary);
+  animation: pulseCaret 1.1s infinite;
+}
+
+@keyframes pulseCaret {
+  0%, 100% { border-color: var(--color-primary); }
+  50% { border-color: transparent; }
+}
+
+/* Input oculto para captura nativa del teclado */
+.hidden-typing-input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  width: 1px;
+  height: 1px;
+}
+
+/* Mensaje si el usuario pierde el foco */
+.focus-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(2px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 20;
+}
+
+.focus-overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.focus-overlay-box {
+  background: var(--bg-card);
+  border: 1px solid var(--color-primary);
+  box-shadow: var(--shadow-lg);
+  padding: 1rem 1.75rem;
+  border-radius: var(--radius-md);
+  text-align: center;
+}
+
+.focus-overlay-box p {
+  font-weight: 600;
+  color: var(--color-primary);
+  font-size: 0.95rem;
+}
+
+.focus-overlay-box span {
+  font-size: 0.775rem;
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   Guía de Dedos Interactiva (Estilo TypingClub & Ratatype)
+   ========================================================================== */
+.finger-guide-wrapper {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 0.75rem 1.25rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.finger-guide-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.finger-pill-active {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.4rem 0.9rem;
+  border-radius: var(--radius-full);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-light);
+  font-size: 0.85rem;
+  transition: var(--transition);
+}
+
+.finger-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
+}
+
+.finger-legend {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+/* ==========================================================================
+   Teclado Virtual Limpio y Ergonómico
+   ========================================================================== */
+.virtual-keyboard-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-md);
+  user-select: none;
+}
+
+.keyboard-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.keyboard-row {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+}
+
+.key-cap {
+  background: var(--key-cap-bg);
+  border: 1px solid var(--key-cap-border);
+  box-shadow: var(--key-cap-shadow);
+  border-radius: var(--radius-sm);
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: transform 0.06s ease, box-shadow 0.06s ease, background-color 0.1s ease;
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  cursor: default;
+}
+
+.key-cap.key-special {
+  color: var(--text-muted);
+  font-size: 0.725rem;
+  font-weight: 600;
+  background: #f8fafc;
+}
+
+.key-labels {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.1;
+  pointer-events: none;
+}
+
+.key-main-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.key-shift-label {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  margin-bottom: 2px;
+}
+
+/* Relieve táctil para F y J */
+.home-bump {
+  position: absolute;
+  bottom: 5px;
+  width: 14px;
+  height: 3px;
+  background: #94a3b8;
+  border-radius: 2px;
+}
+
+/* Colores pastel de dedos (Asignación Ergonómica) */
+.key-cap.key-lp { border-bottom-color: var(--finger-pinky); }
+.key-cap.key-lr { border-bottom-color: var(--finger-ring); }
+.key-cap.key-lm { border-bottom-color: var(--finger-middle); }
+.key-cap.key-li { border-bottom-color: var(--finger-index); }
+.key-cap.key-th { border-bottom-color: var(--finger-thumb); }
+.key-cap.key-ri { border-bottom-color: var(--finger-index); }
+.key-cap.key-rm { border-bottom-color: var(--finger-middle); }
+.key-cap.key-rr { border-bottom-color: var(--finger-ring); }
+.key-cap.key-rp { border-bottom-color: var(--finger-pinky); }
+
+/* Estado: Tecla Activa Objetivo (La que hay que pulsar ahora) */
+.key-cap.key-active-target {
+  background: #2563eb !important;
+  color: #ffffff !important;
+  border-color: #1d4ed8 !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25), 0 3px 0 #1e40af !important;
+  transform: translateY(-2px);
+  animation: keyTargetPulse 1.2s infinite alternate;
+}
+
+.key-cap.key-active-target .key-shift-label {
+  color: #dbeafe !important;
+}
+
+.key-cap.key-active-target .home-bump {
+  background: #ffffff;
+}
+
+@keyframes keyTargetPulse {
+  0% { transform: translateY(-1px); }
+  100% { transform: translateY(-3px); box-shadow: 0 0 0 5px rgba(37, 99, 235, 0.35), 0 4px 0 #1e40af; }
+}
+
+/* Estado: Shift Necesario */
+.key-cap.key-active-shift {
+  background: #f1f5f9;
+  border-color: #3b82f6 !important;
+  color: #2563eb !important;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2), 0 3px 0 #3b82f6 !important;
+}
+
+/* Estado: Tecla pulsada físicamente */
+.key-cap.key-pressed {
+  transform: translateY(2px) !important;
+  box-shadow: var(--key-cap-active-shadow) !important;
+  background: #e2e8f0;
+}
+
+/* ==========================================================================
+   Modal de Resultados Finales (Estilo Typing.com / Ratatype)
+   ========================================================================== */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.modal-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.results-modal-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  max-width: 540px;
+  width: 100%;
+  padding: 2rem;
+  text-align: center;
+  transform: translateY(20px) scale(0.96);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid var(--border-light);
+}
+
+.modal-backdrop.open .results-modal-card {
+  transform: translateY(0) scale(1);
+}
+
+.results-celebration-icon {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+  animation: bounceIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes bounceIn {
+  0% { transform: scale(0.4); opacity: 0; }
+  70% { transform: scale(1.15); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.results-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 0.3rem;
+}
+
+.results-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 1.25rem;
+}
+
+/* Estrellas de puntuación (TypingClub) */
+.results-stars {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.results-stars .star {
+  color: #cbd5e1;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.results-stars .star.star-filled {
+  color: var(--color-gold);
+  transform: scale(1.1);
+  filter: drop-shadow(0 2px 4px rgba(245, 158, 11, 0.3));
+}
+
+/* Rejilla de Métricas Finales */
+.results-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  background: var(--bg-subtle);
+  padding: 1.25rem 1rem;
+  border-radius: var(--radius-md);
+  margin-bottom: 1.25rem;
+}
+
+.result-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.result-card-label {
+  font-size: 0.725rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.result-card-value {
+  font-family: var(--font-mono);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.result-card-unit {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* Tiempo total exacto de finalización */
+.time-completed-banner {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  background: #f8fafc;
+  border: 1px solid var(--border-light);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+.time-completed-banner strong {
+  color: var(--text-main);
+  font-family: var(--font-mono);
+}
+
+/* Teclas a mejorar */
+.problem-keys-box {
+  background: #fff1f2;
+  border: 1px solid #fecdd3;
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.825rem;
+  color: #9f1239;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.problem-key-badges {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.problem-key-badge {
+  background: #ffffff;
+  border: 1px solid #f43f5e;
+  color: #e11d48;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  padding: 0.15rem 0.45rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+}
+
+/* Botones de acción del Modal */
+.modal-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: #ffffff;
+  border: none;
+  padding: 0.75rem 1.4rem;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 0.925rem;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(59, 130, 246, 0.3);
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.btn-primary:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+.btn-secondary {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  color: var(--text-main);
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 0.925rem;
+  cursor: pointer;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.btn-secondary:hover {
+  background: var(--bg-subtle);
+  border-color: var(--border-focus);
+}
+
+/* ==========================================================================
+   Panel Lateral de Selección de Lecciones (Curriculum Drawer)
+   ========================================================================== */
+.drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.35);
+  backdrop-filter: blur(2px);
+  z-index: 90;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.drawer-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.lessons-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 420px;
+  max-width: 90vw;
+  height: 100vh;
+  background: var(--bg-card);
+  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.1);
+  z-index: 95;
+  transform: translateX(100%);
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.drawer-backdrop.open .lessons-drawer {
+  transform: translateX(0);
+}
+
+.drawer-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.drawer-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.btn-close-drawer {
+  background: transparent;
+  border: none;
+  font-size: 1.25rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0.25rem;
+  line-height: 1;
+}
+
+.drawer-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.category-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.category-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.lesson-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.lesson-card-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.lesson-card-item:hover {
+  border-color: var(--color-primary);
+  background: var(--color-primary-light);
+}
+
+.lesson-card-item.active {
+  border-color: var(--color-primary);
+  background: var(--color-primary-light);
+}
+
+.lesson-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.lesson-item-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.lesson-item-tip {
+  font-size: 0.725rem;
+  color: var(--text-muted);
+}
+
+.lesson-item-status {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.8rem;
+}
+
+/* ==========================================================================
+   Modal de Texto Personalizado
+   ========================================================================== */
+.custom-text-textarea {
+  width: 100%;
+  height: 120px;
+  padding: 0.75rem;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  resize: vertical;
+  margin: 1rem 0;
+  outline: none;
+}
+
+.custom-text-textarea:focus {
+  border-color: var(--color-primary);
+}
+
+/* ==========================================================================
+   Modo Zen / Enfoque (Oculta distracciones para escribir)
+   ========================================================================== */
+body.zen-mode .site-header,
+body.zen-mode .virtual-keyboard-section,
+body.zen-mode .finger-guide-wrapper {
+  display: none !important;
+}
+
+body.zen-mode .app-container {
+  max-width: 900px;
+  justify-content: center;
+}
+
+body.zen-mode .text-display-box {
+  min-height: 280px;
+  font-size: 1.85rem;
+}
+
+/* ==========================================================================
+   Pie de Página
+   ========================================================================== */
+.site-footer {
+  border-top: 1px solid var(--border-light);
+  padding: 0.85rem 1.5rem;
+  font-size: 0.785rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-card);
+}
+
+.footer-refs {
+  display: flex;
+  gap: 1rem;
+}
+
+.footer-refs span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* ==========================================================================
+   Responsividad y Adaptabilidad Móvil / Pantallas pequeñas
+   ========================================================================== */
+@media (max-width: 860px) {
+  .stats-dashboard {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  .stat-number {
+    font-size: 1.6rem;
+  }
+  .text-display-box {
+    font-size: 1.25rem;
+    padding: 1.5rem 1.25rem;
+  }
+  .key-cap {
+    height: 38px;
+  }
+  .key-main-label {
+    font-size: 0.725rem;
+  }
+  .keyboard-grid {
+    gap: 4px;
+  }
+  .keyboard-row {
+    gap: 4px;
+  }
+}

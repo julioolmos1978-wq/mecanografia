@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TypoMaster - Aprende Mecanografía al Tacto | Interfaz Limpia y Fluida</title>
+  <meta name="description" content="Aplicación moderna para aprender mecanografía con interfaz limpia, guía de dedos, métricas en tiempo real de WPM, CPM, precisión y tiempo total.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Cabecera Principal -->
+  <header class="site-header">
+    <div class="brand-wrapper">
+      <div class="brand-icon">⌨️</div>
+      <div>
+        <h1 class="brand-title">TypoMaster</h1>
+        <p class="brand-subtitle">Mecanografía sin distracciones</p>
+      </div>
+    </div>
+
+    <div class="header-controls">
+      <button id="btnLessons" class="btn-header" title="Ver catálogo de lecciones">
+        📚 <span>Lecciones</span>
+      </button>
+      <button id="btnCustomText" class="btn-header" title="Escribir tu propio texto o código">
+        📝 <span>Texto libre</span>
+      </button>
+      <button id="btnSound" class="btn-header active" title="Alternar sonido de teclas">
+        🔊 <span>Sonido: Mecánico</span>
+      </button>
+      <button id="btnZen" class="btn-header" title="Modo enfoque sin distracciones">
+        🧘 <span>Modo Zen</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Contenido Central -->
+  <main class="app-container">
+
+    <!-- Panel de Indicadores en Vivo (WPM, CPM, Precisión, Tiempo) -->
+    <section class="stats-dashboard" aria-label="Indicadores en vivo">
+      <!-- WPM / Palabras por minuto -->
+      <div class="stat-item highlight-wpm">
+        <div class="stat-header">
+          <span>⚡</span>
+          <span>Palabras / Minuto</span>
+        </div>
+        <div class="stat-value-group">
+          <span class="stat-number" id="wpmValue">0</span>
+          <span class="stat-unit">WPM</span>
+        </div>
+      </div>
+
+      <!-- CPM / Caracteres por minuto -->
+      <div class="stat-item">
+        <div class="stat-header">
+          <span>🎯</span>
+          <span>Velocidad de tecleo</span>
+        </div>
+        <div class="stat-value-group">
+          <span class="stat-number" id="cpmValue">0</span>
+          <span class="stat-unit">CPM</span>
+        </div>
+      </div>
+
+      <!-- Precisión -->
+      <div class="stat-item highlight-acc">
+        <div class="stat-header">
+          <span>✨</span>
+          <span>Precisión</span>
+        </div>
+        <div class="stat-value-group">
+          <span class="stat-number" id="accuracyValue">100%</span>
+        </div>
+      </div>
+
+      <!-- Tiempo Total / Restante -->
+      <div class="stat-item">
+        <div class="stat-header">
+          <span>⏱️</span>
+          <span id="timerLabel">Tiempo Total</span>
+        </div>
+        <div class="stat-value-group">
+          <span class="stat-number" id="timerValue">00:00</span>
+        </div>
+      </div>
+
+      <!-- Botones de Navegación Rápida -->
+      <div class="stat-actions">
+        <button id="btnPrev" class="btn-icon-action" title="Lección anterior">◀</button>
+        <button id="btnRestart" class="btn-icon-action" title="Reiniciar lección (Tab)">↻</button>
+        <button id="btnNext" class="btn-icon-action" title="Siguiente lección">▶</button>
+      </div>
+    </section>
+
+    <!-- Barra de Progreso de la Lección Actual -->
+    <div class="progress-container">
+      <div class="progress-bar-fill" id="progressBar"></div>
+    </div>
+
+    <!-- Área de Mecanografía y Texto -->
+    <section class="typing-stage" aria-label="Área de tecleado">
+      <div class="stage-top-bar">
+        <div class="lesson-badge">
+          <span class="lesson-pill" id="currentLessonPill">NIVEL 1</span>
+          <span id="currentLessonName">1.1 Teclas Guía: F y J</span>
+        </div>
+        <div class="stage-hint">
+          <span>💡</span>
+          <span id="currentLessonTip">Coloca tus índices sobre las teclas F y J.</span>
+        </div>
+      </div>
+
+      <!-- Texto dinámico interactivo -->
+      <div class="text-display-box" id="textDisplay" tabindex="0">
+        <!-- Generado dinámicamente con spans por caracter -->
+      </div>
+
+      <!-- Input invisible para captura de teclado -->
+      <input type="text" id="hiddenInput" class="hidden-typing-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+
+      <!-- Overlay si el usuario hace clic fuera y pierde el foco -->
+      <div class="focus-overlay" id="focusOverlay">
+        <div class="focus-overlay-box">
+          <p>Haz clic aquí para continuar escribiendo</p>
+          <span>El teclado está en pausa para evitar pulsaciones accidentales</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Guía de Dedos (Matching TypingClub & Ratatype) -->
+    <section class="finger-guide-wrapper" id="fingerGuideContainer">
+      <!-- Renderizado por keyboard.js -->
+    </section>
+
+    <!-- Teclado Virtual con distribución ergonómica -->
+    <section class="virtual-keyboard-section" id="keyboardContainer" aria-label="Teclado Virtual">
+      <!-- Renderizado por keyboard.js -->
+    </section>
+
+  </main>
+
+  <!-- Pie de Página Educativo -->
+  <footer class="site-footer">
+    <div>
+      <strong>TypoMaster</strong> • Diseñado con colores claros y relajantes para largas sesiones de estudio sin fatiga ocular.
+    </div>
+    <div class="footer-refs">
+      <span>📐 Metodología: Posición Base ASDF-JKLÑ</span>
+      <span>⭐ Referencias: Typing.com • TypingClub • Ratatype</span>
+    </div>
+  </footer>
+
+  <!-- Modal de Resultados Finales de la Lección -->
+  <div class="modal-backdrop" id="resultsModal" role="dialog" aria-modal="true">
+    <div class="results-modal-card">
+      <div class="results-celebration-icon">🎉</div>
+      <h2 class="results-title">¡Ejercicio Completado!</h2>
+      <p class="results-subtitle">Excelente trabajo en tu práctica de mecanografía</p>
+
+      <!-- Calificación en Estrellas (Estilo TypingClub) -->
+      <div class="results-stars" id="resStars">
+        <span class="star star-filled">★</span>
+        <span class="star star-filled">★</span>
+        <span class="star star-filled">★</span>
+      </div>
+
+      <!-- Métricas Clave Finales -->
+      <div class="results-metrics-grid">
+        <div class="result-card">
+          <span class="result-card-label">Velocidad</span>
+          <span class="result-card-value" id="resWpm">0</span>
+          <span class="result-card-unit">Palabras / Min</span>
+        </div>
+        <div class="result-card">
+          <span class="result-card-label">Pulsaciones</span>
+          <span class="result-card-value" id="resCpm">0</span>
+          <span class="result-card-unit">Caracteres / Min</span>
+        </div>
+        <div class="result-card">
+          <span class="result-card-label">Precisión</span>
+          <span class="result-card-value" id="resAccuracy">0%</span>
+          <span class="result-card-unit">Aciertos netos</span>
+        </div>
+      </div>
+
+      <!-- Tiempo Total Exacto de Finalización -->
+      <div class="time-completed-banner">
+        <span>⏱️ Tiempo total de finalización:</span>
+        <strong id="resTime">00:00</strong>
+      </div>
+
+      <!-- Teclas que requirieron corrección -->
+      <div class="problem-keys-box" id="resProblemKeys">
+        <!-- Dinámico -->
+      </div>
+
+      <!-- Botones de Acción -->
+      <div class="modal-actions">
+        <button id="resBtnRetry" class="btn-secondary">↺ Reintentar ejercicio</button>
+        <button id="resBtnNext" class="btn-primary">Siguiente lección ➔</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel Lateral Desplegable: Catálogo de Lecciones -->
+  <div class="drawer-backdrop" id="drawerBackdrop">
+    <aside class="lessons-drawer">
+      <div class="drawer-header">
+        <h3 class="drawer-title">Plan de Aprendizaje</h3>
+        <button class="btn-close-drawer" id="btnCloseDrawer" title="Cerrar">✕</button>
+      </div>
+      <div class="drawer-body" id="drawerCategories">
+        <!-- Generado dinámicamente -->
+      </div>
+    </aside>
+  </div>
+
+  <!-- Modal de Texto Personalizado -->
+  <div class="modal-backdrop" id="customTextModal">
+    <div class="results-modal-card" style="max-width: 500px; text-align: left;">
+      <h3 style="font-size: 1.25rem; font-weight:700; color:var(--text-main); margin-bottom: 0.35rem;">
+        Práctica con Texto Libre
+      </h3>
+      <p style="font-size: 0.85rem; color:var(--text-muted);">
+        Pega cualquier texto, artículo o fragmento que desees practicar.
+      </p>
+      <textarea id="customTextArea" class="custom-text-textarea" placeholder="Pega tu texto aquí..."></textarea>
+      <div style="display:flex; justify-content: flex-end; gap:0.5rem;">
+        <button id="btnCloseCustomModal" class="btn-secondary">Cancelar</button>
+        <button id="btnApplyCustomText" class="btn-primary">Comenzar Práctica</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/audio.js"></script>
+  <script src="js/lessons.js"></script>
+  <script src="js/keyboard.js"></script>
+  <script src="js/engine.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
